@@ -1,143 +1,135 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Lock, Mail, ArrowRight, ShieldCheck } from 'lucide-react';
+import { Lock, User, MessageCircle, Phone, Mail } from 'lucide-react';
 
 export function Login() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
+  const [loginType, setLoginType] = useState<'phone' | 'email'>('phone');
+  const [account, setAccount] = useState('');
   const [password, setPassword] = useState('');
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    // Mock login, redirect to dashboard
-    navigate('/admin/dashboard');
+    if (account === '15861382053' && password === 'a2024') {
+        navigate('/admin/dashboard');
+    } else {
+        alert("账号或密码错误！");
+    }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden">
-      {/* Background decorations */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10">
-        <div className="absolute -top-40 -right-40 w-96 h-96 bg-blue-400 rounded-full blur-3xl opacity-20"></div>
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-indigo-400 rounded-full blur-3xl opacity-20"></div>
+    <div className="min-h-screen bg-[#f0f2f5] flex items-center justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden">
+      
+      {/* 顶部语言切换 */}
+      <div className="absolute top-4 right-8 text-sm text-gray-500 cursor-pointer hover:text-gray-900 transition-colors">
+        简体中文
       </div>
 
-      <div className="sm:mx-auto sm:w-full sm:max-w-md relative z-10">
-        <div className="flex justify-center items-center gap-3 mb-8">
-          <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center text-white font-bold text-3xl shadow-lg shadow-blue-500/30">
-            a
-          </div>
-          <span className="text-3xl font-extrabold text-gray-900 tracking-tight">
-            api工厂
-          </span>
+      <div className="max-w-md w-full mx-auto relative z-10">
+        
+        {/* 标题区 */}
+        <div className="text-center mb-8">
+           <h2 className="text-3xl font-bold text-gray-900 tracking-tight">后台管理系统</h2>
+           <p className="mt-2 text-sm text-gray-500">Management System v5.0</p>
         </div>
-        <h2 className="mt-2 text-center text-xl text-gray-600">
-          登录控制台，管理您的后端服务
-        </h2>
-      </div>
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md relative z-10">
-        <div className="bg-white py-8 px-4 shadow-xl shadow-gray-200/50 sm:rounded-2xl sm:px-10 border border-gray-100">
+        {/* 登录卡片 */}
+        <div className="bg-white py-8 px-6 shadow-md sm:rounded-lg sm:px-10 border border-gray-100">
+          
+          {/* 登录方式切换 */}
+          <div className="flex border-b border-gray-200 mb-8">
+             <button 
+                onClick={() => setLoginType('phone')}
+                className={`flex-1 pb-3 text-center text-sm font-medium transition-colors \${loginType === 'phone' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500 hover:text-gray-700'}`}
+             >
+                 <Phone size={16} className="inline mr-2 -mt-0.5" />
+                 手机登录
+             </button>
+             <button 
+                onClick={() => setLoginType('email')}
+                className={`flex-1 pb-3 text-center text-sm font-medium transition-colors \${loginType === 'email' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500 hover:text-gray-700'}`}
+             >
+                 <Mail size={16} className="inline mr-2 -mt-0.5" />
+                 邮箱登录
+             </button>
+          </div>
+
           <form className="space-y-6" onSubmit={handleLogin}>
+            
+            {/* 账号输入框 */}
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                邮箱地址 / 手机号
-              </label>
-              <div className="mt-2 relative rounded-md shadow-sm">
+              <div className="mt-1 relative rounded-md shadow-sm">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Mail className="h-5 w-5 text-gray-400" />
+                  <User className="h-5 w-5 text-gray-400" />
                 </div>
                 <input
-                  id="email"
                   type="text"
                   required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="block w-full pl-10 pr-3 py-2.5 border border-gray-200 rounded-xl text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-shadow"
-                  placeholder="admin@example.com"
+                  value={account}
+                  onChange={(e) => setAccount(e.target.value)}
+                  className="block w-full pl-10 pr-3 py-3 border border-gray-200 rounded-md text-sm placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                  placeholder={loginType === 'phone' ? '请输入手机号' : '请输入邮箱'}
                 />
               </div>
             </div>
 
+            {/* 密码输入框 */}
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                密码
-              </label>
-              <div className="mt-2 relative rounded-md shadow-sm">
+              <div className="mt-1 relative rounded-md shadow-sm">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                   <Lock className="h-5 w-5 text-gray-400" />
                 </div>
                 <input
-                  id="password"
                   type="password"
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="block w-full pl-10 pr-3 py-2.5 border border-gray-200 rounded-xl text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-shadow"
-                  placeholder="••••••••"
+                  className="block w-full pl-10 pr-3 py-3 border border-gray-200 rounded-md text-sm placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                  placeholder="请输入密码"
                 />
               </div>
             </div>
 
-            <div className="flex items-center justify-between">
+            {/* 记住密码 & 登录按钮 */}
+            <div className="flex items-center justify-between mt-4 mb-6">
               <div className="flex items-center">
                 <input
                   id="remember-me"
-                  name="remember-me"
                   type="checkbox"
                   className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                 />
-                <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
-                  自动登录
+                <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-500">
+                  记住登录状态
                 </label>
-              </div>
-
-              <div className="text-sm">
-                <a href="#" className="font-medium text-blue-600 hover:text-blue-500">
-                  忘记密码?
-                </a>
               </div>
             </div>
 
             <div>
               <button
                 type="submit"
-                className="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
               >
-                登录控制台
-                <ArrowRight className="ml-2 h-4 w-4" />
+                登录
               </button>
             </div>
           </form>
 
-          <div className="mt-8">
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-200" />
+          {/* 底部辅助链接 */}
+          <div className="mt-8 flex justify-between items-center text-sm">
+              <a href="#" className="text-gray-500 hover:text-blue-600 transition-colors">
+                  开通新后台
+              </a>
+              <div className="flex space-x-4">
+                  <a href="#" className="text-gray-500 hover:text-blue-600 transition-colors">
+                     忘记密码
+                  </a>
+                  <a href="#" className="text-gray-500 hover:text-blue-600 transition-colors flex items-center">
+                     有问题找客服
+                  </a>
               </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-500">或者</span>
-              </div>
-            </div>
-
-            <div className="mt-6">
-              <button
-                type="button"
-                onClick={() => navigate('/')}
-                className="w-full flex justify-center items-center py-2.5 px-4 border border-gray-300 rounded-xl shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors"
-              >
-                <ShieldCheck className="mr-2 h-5 w-5 text-gray-400" />
-                返回官网首页
-              </button>
-            </div>
           </div>
+
         </div>
-        
-        <p className="mt-8 text-center text-sm text-gray-500">
-          还没有账号？{' '}
-          <a href="#" className="font-bold text-blue-600 hover:text-blue-500">
-            免费注册
-          </a>
-        </p>
       </div>
     </div>
   );

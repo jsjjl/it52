@@ -9,7 +9,13 @@ import {
   Menu, 
   X,
   Bell,
-  Settings
+  ChevronDown,
+  RefreshCw,
+  Search,
+  Settings,
+  Database,
+  FileText,
+  Briefcase
 } from 'lucide-react';
 
 export function AdminLayout() {
@@ -17,11 +23,15 @@ export function AdminLayout() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  // 根据 it120 后台常见的模块扩展左侧菜单
   const navigation = [
-    { name: '控制台概览', href: '/admin/dashboard', icon: LayoutDashboard },
-    { name: '应用与模块', href: '/admin/apps', icon: AppWindow },
+    { name: '首页概览', href: '/admin/dashboard', icon: LayoutDashboard },
+    { name: '工厂设置', href: '/admin/apps', icon: Settings },
     { name: '用户管理', href: '/admin/users', icon: Users },
-    { name: '订单明细', href: '/admin/orders', icon: ShoppingCart },
+    { name: '订单管理', href: '/admin/orders', icon: ShoppingCart },
+    { name: '内容管理', href: '/admin/content', icon: FileText },
+    { name: '财务管理', href: '/admin/finance', icon: Briefcase },
+    { name: '数据字典', href: '/admin/dict', icon: Database },
   ];
 
   const handleLogout = () => {
@@ -29,7 +39,7 @@ export function AdminLayout() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
+    <div className="min-h-screen bg-[#f0f2f5] flex">
       {/* Mobile Sidebar Overlay */}
       {!sidebarOpen && (
         <div 
@@ -38,113 +48,106 @@ export function AdminLayout() {
         />
       )}
 
-      {/* Sidebar */}
+      {/* Sidebar - 深色主题 */}
       <aside 
-        className={`fixed lg:static inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-200 transform transition-transform duration-300 ease-in-out \${
-          sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0 lg:w-20'
-        } flex flex-col`}
+        className={`fixed lg:static inset-y-0 left-0 z-50 bg-[#001529] text-gray-300 transform transition-all duration-300 ease-in-out \${
+          sidebarOpen ? 'w-64 translate-x-0' : '-translate-x-full lg:translate-x-0 lg:w-20'
+        } flex flex-col shadow-xl`}
       >
-        <div className="h-16 flex items-center justify-between px-4 border-b border-gray-200">
-          <div className={`flex items-center gap-2 overflow-hidden \${!sidebarOpen ? 'lg:justify-center' : ''}`}>
-            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold shrink-0">
+        <div className="h-16 flex items-center justify-center px-4 bg-[#002140] cursor-pointer" onClick={() => navigate('/')}>
+          <div className="flex items-center gap-2 overflow-hidden">
+            <div className="w-8 h-8 bg-blue-600 rounded flex items-center justify-center text-white font-bold shrink-0">
               a
             </div>
             {(sidebarOpen || window.innerWidth < 1024) && (
-              <span className="text-xl font-bold text-gray-900 whitespace-nowrap">
-                api工厂后台
+              <span className="text-lg font-bold text-white whitespace-nowrap">
+                api工厂
               </span>
             )}
           </div>
-          <button 
-            onClick={() => setSidebarOpen(false)}
-            className="lg:hidden text-gray-500 hover:text-gray-700"
-          >
-            <X size={20} />
-          </button>
         </div>
 
-        <nav className="flex-1 px-3 py-6 space-y-1 overflow-y-auto">
+        <nav className="flex-1 py-4 space-y-1 overflow-y-auto overflow-x-hidden custom-scrollbar">
           {navigation.map((item) => {
-            const isActive = location.pathname === item.href;
+            const isActive = location.pathname.startsWith(item.href);
             return (
               <NavLink
                 key={item.name}
                 to={item.href}
-                className={`flex items-center px-3 py-2.5 rounded-xl transition-colors \${
+                className={`flex items-center px-4 py-3 mx-2 rounded transition-colors \${
                   isActive 
-                    ? 'bg-blue-50 text-blue-600' 
-                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                    ? 'bg-blue-600 text-white' 
+                    : 'hover:bg-[#002140] hover:text-white'
                 }`}
                 title={!sidebarOpen ? item.name : undefined}
               >
-                <item.icon className={`shrink-0 \${isActive ? 'text-blue-600' : 'text-gray-400'}`} size={20} />
+                <item.icon className={`shrink-0 \${isActive ? 'text-white' : 'text-gray-400'}`} size={18} />
                 {(sidebarOpen || window.innerWidth < 1024) && (
-                  <span className="ml-3 font-medium">{item.name}</span>
+                  <span className="ml-3 text-sm">{item.name}</span>
                 )}
               </NavLink>
             );
           })}
         </nav>
-
-        <div className="p-4 border-t border-gray-200">
-          <button
-            onClick={handleLogout}
-            className="flex items-center w-full px-3 py-2.5 text-gray-600 hover:bg-red-50 hover:text-red-600 rounded-xl transition-colors"
-            title={!sidebarOpen ? "退出登录" : undefined}
-          >
-            <LogOut size={20} className="shrink-0" />
-            {(sidebarOpen || window.innerWidth < 1024) && (
-              <span className="ml-3 font-medium">退出登录</span>
-            )}
-          </button>
-        </div>
       </aside>
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-        {/* Header */}
-        <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4 lg:px-8 z-30">
-          <div className="flex items-center">
+        
+        {/* Header - 浅色主题 */}
+        <header className="h-12 bg-white shadow-sm flex items-center justify-between px-4 z-30">
+          <div className="flex items-center gap-4">
             <button
               onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="text-gray-500 hover:text-gray-700 p-2 -ml-2 rounded-lg hover:bg-gray-100 hidden lg:block"
+              className="text-gray-500 hover:text-gray-700 focus:outline-none"
             >
-              <Menu size={20} />
+              {sidebarOpen ? <Menu size={20} /> : <Menu size={20} />}
             </button>
-            <button
-              onClick={() => setSidebarOpen(true)}
-              className="text-gray-500 hover:text-gray-700 p-2 -ml-2 rounded-lg hover:bg-gray-100 lg:hidden"
-            >
-              <Menu size={20} />
+            <button className="text-gray-500 hover:text-blue-600 focus:outline-none hidden sm:block" title="刷新页面">
+               <RefreshCw size={18} />
             </button>
+            <div className="hidden md:flex items-center bg-gray-100 rounded-full px-3 py-1">
+               <Search size={14} className="text-gray-400 mr-2" />
+               <input type="text" placeholder="搜索功能菜单..." className="bg-transparent text-sm focus:outline-none w-48 text-gray-600" />
+            </div>
           </div>
           
           <div className="flex items-center gap-4">
-            <button className="text-gray-400 hover:text-gray-600 relative p-2 rounded-full hover:bg-gray-100 transition-colors">
-              <Bell size={20} />
-              <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
+            <button className="text-gray-500 hover:text-gray-700 relative">
+              <Bell size={18} />
+              <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
             </button>
-            <button className="text-gray-400 hover:text-gray-600 p-2 rounded-full hover:bg-gray-100 transition-colors">
-              <Settings size={20} />
-            </button>
-            <div className="h-8 w-px bg-gray-200 mx-2"></div>
-            <div className="flex items-center gap-3 cursor-pointer p-1 pr-2 rounded-full hover:bg-gray-50 border border-transparent hover:border-gray-200 transition-all">
+            
+            <div className="flex items-center gap-2 cursor-pointer hover:bg-gray-50 px-2 py-1 rounded transition-colors">
               <img 
                 src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" 
                 alt="User Avatar" 
-                className="w-8 h-8 rounded-full bg-gray-100"
+                className="w-7 h-7 rounded-full bg-gray-200"
               />
-              <span className="text-sm font-medium text-gray-700 hidden sm:block">管理员</span>
+              <span className="text-sm text-gray-700 hidden sm:block">15861382053</span>
+              <ChevronDown size={14} className="text-gray-500" />
             </div>
+            
+            <button
+              onClick={handleLogout}
+              className="text-gray-500 hover:text-red-600 focus:outline-none"
+              title="退出登录"
+            >
+              <LogOut size={18} />
+            </button>
           </div>
         </header>
 
-        {/* Page Content */}
-        <main className="flex-1 overflow-y-auto p-4 lg:p-8">
-          <div className="mx-auto max-w-6xl">
+        {/* Page Content 包含面包屑和内容区 */}
+        <main className="flex-1 overflow-y-auto p-4 lg:p-6">
+          <div className="mx-auto max-w-7xl">
             <Outlet />
           </div>
         </main>
+
+        <footer className="text-center py-4 text-sm text-gray-500">
+           Copyright © {new Date().getFullYear()} api工厂 管理系统
+        </footer>
       </div>
     </div>
   );
