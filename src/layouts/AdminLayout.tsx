@@ -26,7 +26,8 @@ export function AdminLayout() {
   // 根据 it120 后台常见的模块扩展左侧菜单
   const navigation = [
     { name: '首页概览', href: '/admin/dashboard', icon: LayoutDashboard },
-    { name: '工厂设置', href: '/admin/apps', icon: Settings },
+    { name: '工厂设置', href: '/admin/settings', icon: Settings },
+    { name: '应用与模块', href: '/admin/apps', icon: AppWindow },
     { name: '用户管理', href: '/admin/users', icon: Users },
     { name: '订单管理', href: '/admin/orders', icon: ShoppingCart },
     { name: '内容管理', href: '/admin/content', icon: FileText },
