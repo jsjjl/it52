@@ -1,25 +1,30 @@
 import React from 'react';
-import { Header } from './components/Header';
-import { Hero } from './components/Hero';
-import { McpSection } from './components/McpSection';
-import { DocsNav } from './components/DocsNav';
-import { BusinessScenes } from './components/BusinessScenes';
-import { SecuritySection } from './components/SecuritySection';
-import { Footer } from './components/Footer';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { LandingPage } from './pages/Landing';
+import { Login } from './pages/Login';
+import { AdminLayout } from './layouts/AdminLayout';
+import { Dashboard } from './pages/admin/Dashboard';
+import { Users } from './pages/admin/Users';
+import { Apps } from './pages/admin/Apps';
+import { Orders } from './pages/admin/Orders';
 
 function App() {
   return (
-    <div className="min-h-screen bg-white selection:bg-blue-100 selection:text-blue-900 font-sans">
-      <Header />
-      <main>
-        <Hero />
-        <McpSection />
-        <DocsNav />
-        <BusinessScenes />
-        <SecuritySection />
-      </main>
-      <Footer />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<Navigate to="/admin/dashboard" replace />} />
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="users" element={<Users />} />
+          <Route path="apps" element={<Apps />} />
+          <Route path="orders" element={<Orders />} />
+        </Route>
+        {/* Catch all route */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

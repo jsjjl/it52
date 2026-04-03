@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, ChevronDown } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -30,14 +31,14 @@ export function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
           {/* Logo */}
-          <div className="flex items-center gap-2 cursor-pointer">
+          <Link to="/" className="flex items-center gap-2 cursor-pointer">
             <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-xl">
               a
             </div>
             <span className={`text-2xl font-bold ${isScrolled ? 'text-gray-900' : 'text-gray-900'}`}>
               api工厂
             </span>
-          </div>
+          </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
@@ -54,9 +55,9 @@ export function Header() {
 
           {/* Right side actions */}
           <div className="hidden md:flex items-center space-x-4">
-            <a href="#" className="text-gray-600 hover:text-blue-600 font-medium">
-              登录
-            </a>
+            <Link to="/login" className="text-gray-600 hover:text-blue-600 font-medium">
+              登录控制台
+            </Link>
             <a 
               href="#" 
               className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-full font-medium transition-colors"
@@ -91,12 +92,12 @@ export function Header() {
               </a>
             ))}
             <div className="mt-4 pt-4 border-t border-gray-100 flex flex-col space-y-3">
-              <a
-                href="#"
+              <Link
+                to="/login"
                 className="block text-center px-4 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md"
               >
-                登录
-              </a>
+                登录控制台
+              </Link>
               <a
                 href="#"
                 className="block text-center px-4 py-2 text-base font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-md"
